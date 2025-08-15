@@ -14,6 +14,7 @@
 .logo {
   text-decoration: none;
   color: white;
+  cursor: pointer;
 }
 
 .logo h1 {
@@ -31,14 +32,26 @@
 }
 
 .nav-link {
+  background: none;
+  border: none;
   color: white;
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.3s ease;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
 }
 
 .nav-link:hover {
   color: #3498db;
+  background-color: rgba(52, 152, 219, 0.1);
+}
+
+.nav-link.active {
+  color: #3498db;
+  background-color: rgba(52, 152, 219, 0.2);
 }
 
 @media (max-width: 768px) {

@@ -1,40 +1,64 @@
 import React from "react";
 import "./Header.css";
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  currentPage: string;
+  onNavigate: (page: string) => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
+  const handleNavigation = (page: string) => {
+    onNavigate(page);
+  };
+
   return (
     <header className="header">
       <div className="container">
         <div className="header-content">
-          <div className="logo">
+          <div className="logo" onClick={() => handleNavigation("home")}>
             <h1>Job Finder</h1>
           </div>
           <nav className="nav">
             <ul className="nav-list">
               <li>
-                <a href="#" className="nav-link">
+                <button
+                  onClick={() => handleNavigation("home")}
+                  className={`nav-link ${currentPage === "home" ? "active" : ""}`}
+                >
                   Home
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#" className="nav-link">
+                <button
+                  onClick={() => handleNavigation("jobs")}
+                  className={`nav-link ${currentPage === "jobs" ? "active" : ""}`}
+                >
                   Jobs
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#" className="nav-link">
+                <button
+                  onClick={() => handleNavigation("about")}
+                  className={`nav-link ${currentPage === "about" ? "active" : ""}`}
+                >
                   About
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#" className="nav-link">
+                <button
+                  onClick={() => handleNavigation("contact")}
+                  className={`nav-link ${currentPage === "contact" ? "active" : ""}`}
+                >
                   Contact
-                </a>
+                </button>
               </li>
               <li>
-                <a href="#" className="nav-link">
+                <button
+                  onClick={() => handleNavigation("profile")}
+                  className={`nav-link ${currentPage === "profile" ? "active" : ""}`}
+                >
                   Profile
-                </a>
+                </button>
               </li>
             </ul>
           </nav>

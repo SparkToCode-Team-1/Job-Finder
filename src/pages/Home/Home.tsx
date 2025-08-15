@@ -1,7 +1,11 @@
 import React from "react";
 import "./Home.css";
 
-const Home: React.FC = () => {
+interface HomeProps {
+  onNavigate: (page: string) => void;
+}
+
+const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   return (
     <div className="home">
       <div className="container">
@@ -13,12 +17,18 @@ const Home: React.FC = () => {
               the world.
             </p>
             <div className="hero-actions">
-              <a href="#" className="btn btn-primary">
+              <button 
+                onClick={() => onNavigate("jobs")} 
+                className="btn btn-primary"
+              >
                 Browse Jobs
-              </a>
-              <a href="#" className="btn btn-secondary">
+              </button>
+              <button 
+                onClick={() => onNavigate("profile")} 
+                className="btn btn-secondary"
+              >
                 Create Profile
-              </a>
+              </button>
             </div>
           </div>
         </section>
