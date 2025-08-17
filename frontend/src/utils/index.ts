@@ -1,6 +1,8 @@
+import axios, { AxiosRequestConfig } from "axios";
+
 // API endpoints
 export const API_BASE_URL =
-  process.env.REACT_APP_API_URL || "http://localhost:8000/api";
+  process.env.REACT_APP_API_URL || "http://localhost:8080/api";
 
 export const API_ENDPOINTS = {
   jobs: `${API_BASE_URL}/jobs`,
@@ -9,21 +11,17 @@ export const API_ENDPOINTS = {
   applications: `${API_BASE_URL}/applications`,
 };
 
-// API utility functions
-export const fetcher = async (url: string, options?: RequestInit) => {
-  const response = await fetch(url, {
-    headers: {
-      "Content-Type": "application/json",
-      ...options?.headers,
-    },
-    ...options,
-  });
+// Axios instance
+export const api = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: 15000,
+  headers: { "Content-Type": "application/json" },
+});
 
-  if (!response.ok) {
-    throw new Error(`API Error: ${response.status}`);
-  }
-
-  return response.json();
+// API utility function (axios-based)
+export const fetcher = async (url: string, config?: AxiosRequestConfig) => {
+  const res = await api.request({ url, ...config });
+  return res.data;
 };
 
 // Date formatting utilities
