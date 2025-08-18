@@ -88,21 +88,70 @@ public class JobController {
     }
 
     // Add sample job endpoint for testing
-    // @PostMapping("/add-sample")
-    // public ResponseEntity<Jobs> addSampleJob() {
-    //     Jobs sampleJob = new Jobs();
-    //     sampleJob.setSourceId("jobboard1");
-    //     sampleJob.setSourceJobId("001");
-    //     sampleJob.setTitle("Senior Software Engineer");
-    //     sampleJob.setCompany("TechCorp Solutions");
-    //     sampleJob.setLocation("New York, NY");
-    //     sampleJob.setSalaryMin(new java.math.BigDecimal("90000"));
-    //     sampleJob.setSalaryMax(new java.math.BigDecimal("130000"));
-    //     sampleJob.setDescription("We are looking for an experienced Senior Software Engineer to join our growing team. You will be responsible for designing and implementing scalable web applications using modern technologies. Requirements include 5+ years of experience in Java/Spring Boot, React, and database design.");
-    //     sampleJob.setJobType("Full-time");
-    //     sampleJob.setPostedAt(java.time.ZonedDateTime.now().minusDays(1));
-        
-    //     Jobs savedJob = jobRepo.save(sampleJob);
-    //     return ResponseEntity.ok(savedJob);
-    // }
+    @PostMapping("/add-sample")
+    public ResponseEntity<String> addSampleJobs() {
+        try {
+            // Only load data if database is empty
+            if (jobRepo.count() == 0) {
+                // Sample job 1
+                Jobs job1 = new Jobs();
+                job1.setSourceId("indeed");
+                job1.setSourceJobId("job_001");
+                job1.setTitle("Senior Software Engineer");
+                job1.setCompany("Tech Solutions Inc");
+                job1.setLocation("Baghdad, Iraq");
+                job1.setSalaryMin(new java.math.BigDecimal("800"));
+                job1.setSalaryMax(new java.math.BigDecimal("1200"));
+                job1.setDescription("We are looking for a Senior Software Engineer to join our dynamic team.");
+                job1.setJobType("Full-time");
+                job1.setPostedAt(java.time.ZonedDateTime.now().minusDays(2));
+                job1.setRawPayload("{}");
+
+                // Sample job 2
+                Jobs job2 = new Jobs();
+                job2.setSourceId("linkedin");
+                job2.setSourceJobId("job_002");
+                job2.setTitle("Frontend Developer");
+                job2.setCompany("Digital Agency");
+                job2.setLocation("Erbil, Iraq");
+                job2.setSalaryMin(new java.math.BigDecimal("600"));
+                job2.setSalaryMax(new java.math.BigDecimal("900"));
+                job2.setDescription("Join our creative team as a Frontend Developer.");
+                job2.setJobType("Full-time");
+                job2.setPostedAt(java.time.ZonedDateTime.now().minusDays(1));
+                job2.setRawPayload("{}");
+
+                // Sample job 3
+                Jobs job3 = new Jobs();
+                job3.setSourceId("bayt");
+                job3.setSourceJobId("job_003");
+                job3.setTitle("Backend Developer");
+                job3.setCompany("StartupTech");
+                job3.setLocation("Basra, Iraq");
+                job3.setSalaryMin(new java.math.BigDecimal("700"));
+                job3.setSalaryMax(new java.math.BigDecimal("1000"));
+                job3.setDescription("Looking for a skilled Backend Developer to work with Spring Boot and Java.");
+                job3.setJobType("Remote");
+                job3.setPostedAt(java.time.ZonedDateTime.now().minusHours(12));
+                job3.setRawPayload("{}");
+
+                jobRepo.save(job1);
+                jobRepo.save(job2);
+                jobRepo.save(job3);
+
+                return ResponseEntity.ok("Sample jobs added successfully! Total jobs: " + jobRepo.count());
+            } else {
+                return ResponseEntity.ok("Database already has " + jobRepo.count() + " jobs.");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error adding sample jobs: " + e.getMessage());
+        }
+    }
+
+    // Check database status
+    @GetMapping("/status")
+    public ResponseEntity<String> getDatabaseStatus() {
+        long count = jobRepo.count();
+        return ResponseEntity.ok("Database contains " + count + " jobs.");
+    }
 }
