@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Frontend Developer",
+    "company": "Acme Corp",
+    "location": "Muscat, Oman",
+    "salary_min": 700,
+    "salary_max": 900,
+    "job_type": "Full-time",
+    "posted_at": "2025-08-01",
+    "description": "Build UI components, collaborate with backend, write clean code.",
+    "applyUrl": "https://example.com/apply/1"
+  },
+  {
+    "id": 2,
+    "title": "Backend Engineer",
+    "company": "TechWaves",
+    "location": "Remote",
+    "salary_min": 1000,
+    "salary_max": 1400,
+    "job_type": "Remote",
+    "posted_at": "2025-08-10",
+    "description": "Spring Boot APIs, PostgreSQL, cloud deploy.",
+    "applyUrl": "https://example.com/apply/2"
+  }
+]
