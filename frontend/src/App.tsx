@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import "./App.css";
+import { LanguageProvider } from "./contexts/LanguageContext";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import Home from "./pages/Home/Home";
 import Jobs from "./pages/Jobs/Jobs";
 import JobDetail from "./pages/JobDetail/JobDetail";
-import Profile from "./pages/Profile/Profile";
+import Profile from "./pages/Profile/Profile"; // Login page
+import UserProfile from "./pages/UserProfile/UserProfile"; // User profile page
 import About from "./pages/About/About";
 
 function App() {
@@ -19,8 +21,10 @@ function App() {
         return <Jobs />;
       case "job-detail":
         return <JobDetail />;
-      case "profile":
-        return <Profile />;
+      case "login":
+        return <Profile onNavigate={setCurrentPage} />;
+      case "userprofile":
+        return <UserProfile />;
       case "about":
         return <About />;
 
@@ -30,11 +34,13 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <Header currentPage={currentPage} onNavigate={setCurrentPage} />
-      <main className="main-content">{renderPage()}</main>
-      <Footer />
-    </div>
+    <LanguageProvider>
+      <div className="App">
+        <Header currentPage={currentPage} onNavigate={setCurrentPage} />
+        <main className="main-content">{renderPage()}</main>
+        <Footer />
+      </div>
+    </LanguageProvider>
   );
 }
 

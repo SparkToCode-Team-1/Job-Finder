@@ -1,8 +1,14 @@
-import React, { useState } from "react";
-import "./Profile.css";
+import React, { useState } from 'react';
+import './Profile.css';
+import { useLanguage } from '../../contexts/LanguageContext';
 
-const Profile: React.FC = () => {
+interface ProfileProps {
+  onNavigate: (page: string) => void;
+}
+
+const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
   const [isLogin, setIsLogin] = useState(true);
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -17,17 +23,35 @@ const Profile: React.FC = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isLogin) {
-      // Handle login logic here
-      console.log('Login attempt:', { email: formData.email, password: formData.password });
-      // After successful login, redirect to user profile
-      alert('تم تسجيل الدخول بنجاح!');
-    } else {
-      // Handle signup logic here
-      console.log('Signup attempt:', formData);
-      alert('تم إنشاء الحساب بنجاح!');
+    
+    if (!isLogin && formData.password !== formData.confirmPassword) {
+      alert('كلمات المرور غير متطابقة');
+      return;
+    }
+
+    try {
+      // Here you would make an API call to your authentication endpoint
+      console.log(isLogin ? 'Login attempt:' : 'Signup attempt:', formData);
+      
+      // Simulate successful authentication
+      const mockUserData = {
+        name: formData.fullName || 'محمد أحمد',
+        email: formData.email,
+        token: 'mock-jwt-token-12345'
+      };
+      
+      // Store authentication data
+      localStorage.setItem('authToken', mockUserData.token);
+      localStorage.setItem('userInfo', JSON.stringify(mockUserData));
+      
+      // Navigate to user profile
+      onNavigate('userprofile');
+      
+    } catch (error) {
+      console.error('Authentication error:', error);
+      alert('حدث خطأ في تسجيل الدخول');
     }
   };
 
@@ -37,8 +61,8 @@ const Profile: React.FC = () => {
         <div className="auth-container">
           <div className="auth-form-container">
             <div className="auth-header">
-              <h1>{isLogin ? 'تسجيل الدخول' : 'إنشاء حساب جديد'}</h1>
-              <p>{isLogin ? 'مرحباً بك مرة أخرى!' : 'انضم إلينا اليوم'}</p>
+              <h1>{isLogin ? t('loginTitle') : t('signupTitle')}</h1>
+              <p>{isLogin ? t('loginSubtitle') : t('signupSubtitle')}</p>
             </div>
 
             <form onSubmit={handleSubmit} className="auth-form">

@@ -1,0 +1,84 @@
+/* Language Switcher Styles */
+.language-switcher {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  color: #2c3e50;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.lang-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.lang-btn.active {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  border-color: #3498db;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.lang-btn i {
+  font-size: 1rem;
+}
+
+.lang-btn span {
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .language-switcher {
+    gap: 0.25rem;
+  }
+  
+  .lang-btn {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+  
+  .lang-btn span {
+    display: none; /* Hide text on mobile, show only icons */
+  }
+  
+  .lang-btn i {
+    font-size: 1.1rem;
+  }
+}
+
+/* RTL Support */
+[dir="rtl"] .language-switcher {
+  flex-direction: row-reverse;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .lang-btn {
+    color: #ecf0f1;
+    background: rgba(0, 0, 0, 0.1);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .lang-btn:hover {
+    background: rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+}

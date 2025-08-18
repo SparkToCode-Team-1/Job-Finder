@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './UserProfile.css';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface UserProfileData {
   id?: number;
@@ -15,6 +16,7 @@ interface UserProfileData {
 }
 
 const UserProfile: React.FC = () => {
+  const { t } = useLanguage();
   const [profile, setProfile] = useState<UserProfileData>({
     name: '',
     email: '',

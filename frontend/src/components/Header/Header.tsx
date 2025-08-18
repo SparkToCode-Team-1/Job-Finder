@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Header.css";
+import { useLanguage } from "../../contexts/LanguageContext";
+import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher";
 
 interface HeaderProps {
   currentPage: string;
@@ -10,6 +12,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState("");
+  const { t } = useLanguage();
 
   const handleNavigation = (page: string) => {
     onNavigate(page);
@@ -79,15 +82,19 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
             <h1>JobFinder</h1>
           </div>
 
-          <button
-            className="mobile-menu-btn"
-            onClick={toggleMobileMenu}
-            aria-label="Toggle mobile menu">
-            <i
-              className={`fas ${
-                isMobileMenuOpen ? "fa-times" : "fa-bars"
-              }`}></i>
-          </button>
+          <div className="header-controls">
+            <LanguageSwitcher />
+            
+            <button
+              className="mobile-menu-btn"
+              onClick={toggleMobileMenu}
+              aria-label="Toggle mobile menu">
+              <i
+                className={`fas ${
+                  isMobileMenuOpen ? "fa-times" : "fa-bars"
+                }`}></i>
+            </button>
+          </div>
 
           <nav className={`nav ${isMobileMenuOpen ? "active" : ""}`}>
             <ul className="nav-list">
@@ -98,7 +105,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                     currentPage === "home" ? "active" : ""
                   }`}>
                   <i className="fas fa-home nav-icon"></i>
-                  <span>الرئيسية</span>
+                  <span>{t('home')}</span>
                 </button>
               </li>
               <li>
@@ -108,7 +115,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                     currentPage === "jobs" ? "active" : ""
                   }`}>
                   <i className="fas fa-briefcase nav-icon"></i>
-                  <span>الوظائف</span>
+                  <span>{t('jobs')}</span>
                 </button>
               </li>
               <li>
@@ -118,7 +125,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                     currentPage === "about" ? "active" : ""
                   }`}>
                   <i className="fas fa-info-circle nav-icon"></i>
-                  <span>حولنا</span>
+                  <span>{t('about')}</span>
                 </button>
               </li>
 
@@ -130,7 +137,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                       currentPage === "login" ? "active" : ""
                     }`}>
                     <i className="fas fa-sign-in-alt nav-icon"></i>
-                    <span>دخول</span>
+                    <span>{t('login')}</span>
                   </button>
                 </li>
               ) : (
@@ -145,13 +152,13 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                         onClick={() => handleNavigation("userprofile")}
                         className="dropdown-item">
                         <i className="fas fa-user"></i>
-                        الملف الشخصي
+                        {t('profile')}
                       </button>
                       <button
                         onClick={handleLogout}
                         className="dropdown-item logout">
                         <i className="fas fa-sign-out-alt"></i>
-                        خروج
+                        {t('logout')}
                       </button>
                     </div>
                   </li>
