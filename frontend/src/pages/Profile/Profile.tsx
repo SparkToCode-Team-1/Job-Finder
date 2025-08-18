@@ -1,58 +1,154 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Profile.css";
 
 const Profile: React.FC = () => {
+  const [isLogin, setIsLogin] = useState(true);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    fullName: ''
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isLogin) {
+      // Handle login logic here
+      console.log('Login attempt:', { email: formData.email, password: formData.password });
+      // After successful login, redirect to user profile
+      alert('تم تسجيل الدخول بنجاح!');
+    } else {
+      // Handle signup logic here
+      console.log('Signup attempt:', formData);
+      alert('تم إنشاء الحساب بنجاح!');
+    }
+  };
+
   return (
-    <div className="profile">
+    <div className="auth-page">
       <div className="container">
-        <h1>User Profile</h1>
-        <div className="profile-content">
-          <div className="profile-section">
-            <h2>Personal Information</h2>
-            <form>
+        <div className="auth-container">
+          <div className="auth-form-container">
+            <div className="auth-header">
+              <h1>{isLogin ? 'تسجيل الدخول' : 'إنشاء حساب جديد'}</h1>
+              <p>{isLogin ? 'مرحباً بك مرة أخرى!' : 'انضم إلينا اليوم'}</p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="auth-form">
+              {!isLogin && (
+                <div className="form-group">
+                  <label htmlFor="fullName">
+                    <i className="fas fa-user"></i>
+                    الاسم الكامل
+                  </label>
+                  <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleInputChange}
+                    placeholder="أدخل اسمك الكامل"
+                    required
+                  />
+                </div>
+              )}
+
               <div className="form-group">
-                <label>Full Name</label>
-                <input type="text" placeholder="Enter your full name" />
+                <label htmlFor="email">
+                  <i className="fas fa-envelope"></i>
+                  البريد الإلكتروني
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="أدخل بريدك الإلكتروني"
+                  required
+                />
               </div>
+
               <div className="form-group">
-                <label>Email</label>
-                <input type="email" placeholder="Enter your email" />
+                <label htmlFor="password">
+                  <i className="fas fa-lock"></i>
+                  كلمة المرور
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  placeholder="أدخل كلمة المرور"
+                  required
+                />
               </div>
-              <div className="form-group">
-                <label>Phone</label>
-                <input type="tel" placeholder="Enter your phone number" />
-              </div>
-              <div className="form-group">
-                <label>Location</label>
-                <input type="text" placeholder="Enter your location" />
-              </div>
+
+              {!isLogin && (
+                <div className="form-group">
+                  <label htmlFor="confirmPassword">
+                    <i className="fas fa-lock"></i>
+                    تأكيد كلمة المرور
+                  </label>
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    placeholder="أكد كلمة المرور"
+                    required
+                  />
+                </div>
+              )}
+
+              <button type="submit" className="auth-btn">
+                <i className={`fas ${isLogin ? 'fa-sign-in-alt' : 'fa-user-plus'}`}></i>
+                {isLogin ? 'تسجيل الدخول' : 'إنشاء حساب'}
+              </button>
             </form>
+
+            <div className="auth-switch">
+              <p>
+                {isLogin ? 'لا تملك حساباً؟' : 'تملك حساباً بالفعل؟'}
+                <button
+                  type="button"
+                  onClick={() => setIsLogin(!isLogin)}
+                  className="switch-btn"
+                >
+                  {isLogin ? 'إنشاء حساب جديد' : 'تسجيل الدخول'}
+                </button>
+              </p>
+            </div>
+
+            <div className="social-login">
+              <div className="divider">
+                <span>أو</span>
+              </div>
+              <div className="social-buttons">
+                <button type="button" className="social-btn google-btn">
+                  <i className="fab fa-google"></i>
+                  متابعة مع Google
+                </button>
+                <button type="button" className="social-btn facebook-btn">
+                  <i className="fab fa-facebook-f"></i>
+                  متابعة مع Facebook
+                </button>
+              </div>
+            </div>
           </div>
 
-          <div className="profile-section">
-            <h2>Professional Information</h2>
-            <form>
-              <div className="form-group">
-                <label>Job Title</label>
-                <input type="text" placeholder="Enter your current job title" />
-              </div>
-              <div className="form-group">
-                <label>Experience Level</label>
-                <select>
-                  <option>Entry Level</option>
-                  <option>Mid Level</option>
-                  <option>Senior Level</option>
-                  <option>Executive</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label>Skills</label>
-                <textarea placeholder="List your skills separated by commas"></textarea>
-              </div>
-            </form>
+          <div className="auth-image">
+            <img src="/images/hero-sec-img.gif" alt="Login Animation" />
           </div>
-
-          <button className="save-btn">Save Profile</button>
         </div>
       </div>
     </div>

@@ -1,23 +1,47 @@
-.profile {
+/* Auth Page Styles */
+.auth-page {
   padding: 2rem 0;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
 }
 
-.profile-content {
-  max-width: 800px;
+.auth-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 2rem;
 }
 
-.profile-section {
+.auth-form-container {
   background: white;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.auth-header {
+  text-align: center;
   margin-bottom: 2rem;
 }
 
-.profile-section h2 {
+.auth-header h1 {
+  font-size: 2.5rem;
   color: #2c3e50;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.auth-header p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+.auth-form {
+  margin-bottom: 2rem;
 }
 
 .form-group {
@@ -25,35 +49,185 @@
 }
 
 .form-group label {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   margin-bottom: 0.5rem;
   color: #2c3e50;
   font-weight: 600;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  padding: 10px 15px;
-  border: 2px solid #ddd;
-  border-radius: 5px;
   font-size: 1rem;
 }
 
-.form-group textarea {
-  height: 100px;
-  resize: vertical;
+.form-group label i {
+  color: #3498db;
+  width: 16px;
 }
 
-.save-btn {
-  background-color: #27ae60;
+.form-group input {
+  width: 100%;
+  padding: 15px 20px;
+  border: 2px solid #e1e8ed;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  direction: rtl;
+  text-align: right;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.auth-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #3498db, #2980b9);
   color: white;
   border: none;
-  padding: 15px 30px;
-  border-radius: 5px;
+  padding: 15px;
+  border-radius: 10px;
   font-weight: 600;
   font-size: 1.1rem;
   cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.auth-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+.auth-switch {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-switch p {
+  color: #7f8c8d;
+  margin-bottom: 1rem;
+}
+
+.switch-btn {
+  background: none;
+  border: none;
+  color: #3498db;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-right: 0.5rem;
+}
+
+.switch-btn:hover {
+  color: #2980b9;
+}
+
+.social-login {
+  margin-top: 2rem;
+}
+
+.divider {
+  text-align: center;
+  margin: 1.5rem 0;
+  position: relative;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #e1e8ed;
+}
+
+.divider span {
+  background: white;
+  padding: 0 1rem;
+  color: #7f8c8d;
+}
+
+.social-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-btn {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid #e1e8ed;
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.google-btn:hover {
+  border-color: #db4437;
+  background: #db4437;
+  color: white;
+}
+
+.facebook-btn:hover {
+  border-color: #4267B2;
+  background: #4267B2;
+  color: white;
+}
+
+.auth-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-image img {
   width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 15px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .auth-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 1rem;
+  }
+
+  .auth-form-container {
+    padding: 2rem;
+  }
+
+  .auth-header h1 {
+    font-size: 2rem;
+  }
+
+  .social-buttons {
+    flex-direction: column;
+  }
+
+  .auth-image {
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-form-container {
+    padding: 1.5rem;
+  }
+
+  .auth-header h1 {
+    font-size: 1.8rem;
+  }
 }

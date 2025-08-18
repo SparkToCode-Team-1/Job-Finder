@@ -7,7 +7,6 @@ import Jobs from "./pages/Jobs/Jobs";
 import JobDetail from "./pages/JobDetail/JobDetail";
 import Profile from "./pages/Profile/Profile";
 import About from "./pages/About/About";
-import Contact from "./pages/Contact/Contact";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("home");
@@ -24,8 +23,7 @@ function App() {
         return <Profile />;
       case "about":
         return <About />;
-      case "contact":
-        return <Contact />;
+
       default:
         return <Home onNavigate={setCurrentPage} />;
     }

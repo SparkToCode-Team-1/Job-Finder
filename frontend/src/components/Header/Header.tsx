@@ -8,11 +8,34 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userName, setUserName] = useState("");
 
   const handleNavigation = (page: string) => {
     onNavigate(page);
     setIsMobileMenuOpen(false); // Close mobile menu after navigation
   };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setUserName("");
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userInfo');
+    onNavigate('home');
+    setIsMobileMenuOpen(false);
+  };
+
+  // Check authentication status on component mount
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    const userInfo = localStorage.getItem('userInfo');
+    
+    if (token && userInfo) {
+      setIsAuthenticated(true);
+      const user = JSON.parse(userInfo);
+      setUserName(user.name || 'المستخدم');
+    }
+  }, []);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -75,7 +98,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                     currentPage === "home" ? "active" : ""
                   }`}>
                   <i className="fas fa-home nav-icon"></i>
-                  <span>Home</span>
+                  <span>الرئيسية</span>
                 </button>
               </li>
               <li>
@@ -85,7 +108,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                     currentPage === "jobs" ? "active" : ""
                   }`}>
                   <i className="fas fa-briefcase nav-icon"></i>
-                  <span>Jobs</span>
+                  <span>الوظائف</span>
                 </button>
               </li>
               <li>
@@ -95,29 +118,45 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                     currentPage === "about" ? "active" : ""
                   }`}>
                   <i className="fas fa-info-circle nav-icon"></i>
-                  <span>About</span>
+                  <span>حولنا</span>
                 </button>
               </li>
-              <li>
-                <button
-                  onClick={() => handleNavigation("contact")}
-                  className={`nav-link ${
-                    currentPage === "contact" ? "active" : ""
-                  }`}>
-                  <i className="fas fa-phone nav-icon"></i>
-                  <span>Contact</span>
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => handleNavigation("profile")}
-                  className={`nav-link ${
-                    currentPage === "profile" ? "active" : ""
-                  }`}>
-                  <i className="fas fa-user nav-icon"></i>
-                  <span>Profile</span>
-                </button>
-              </li>
+
+              {!isAuthenticated ? (
+                <li>
+                  <button
+                    onClick={() => handleNavigation("login")}
+                    className={`nav-link ${
+                      currentPage === "login" ? "active" : ""
+                    }`}>
+                    <i className="fas fa-sign-in-alt nav-icon"></i>
+                    <span>دخول</span>
+                  </button>
+                </li>
+              ) : (
+                <>
+                  <li className="user-menu">
+                    <div className="user-info">
+                      <i className="fas fa-user-circle nav-icon"></i>
+                      <span>{userName}</span>
+                    </div>
+                    <div className="dropdown-menu">
+                      <button
+                        onClick={() => handleNavigation("userprofile")}
+                        className="dropdown-item">
+                        <i className="fas fa-user"></i>
+                        الملف الشخصي
+                      </button>
+                      <button
+                        onClick={handleLogout}
+                        className="dropdown-item logout">
+                        <i className="fas fa-sign-out-alt"></i>
+                        خروج
+                      </button>
+                    </div>
+                  </li>
+                </>
+              )}
             </ul>
           </nav>
         </div>
