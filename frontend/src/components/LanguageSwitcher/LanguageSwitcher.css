@@ -49,16 +49,16 @@
   .language-switcher {
     gap: 0.25rem;
   }
-  
+
   .lang-btn {
     padding: 6px 10px;
     font-size: 0.8rem;
   }
-  
+
   .lang-btn span {
     display: none; /* Hide text on mobile, show only icons */
   }
-  
+
   .lang-btn i {
     font-size: 1.1rem;
   }
@@ -76,7 +76,7 @@
     background: rgba(0, 0, 0, 0.1);
     border-color: rgba(255, 255, 255, 0.1);
   }
-  
+
   .lang-btn:hover {
     background: rgba(0, 0, 0, 0.2);
     border-color: rgba(255, 255, 255, 0.2);

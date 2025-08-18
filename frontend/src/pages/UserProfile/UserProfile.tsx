@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import './UserProfile.css';
-import { useLanguage } from '../../contexts/LanguageContext';
+import React, { useState, useEffect } from "react";
+import "./UserProfile.css";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 interface UserProfileData {
   id?: number;
@@ -18,14 +18,14 @@ interface UserProfileData {
 const UserProfile: React.FC = () => {
   const { t } = useLanguage();
   const [profile, setProfile] = useState<UserProfileData>({
-    name: '',
-    email: '',
-    phone: '',
-    location: '',
-    experience: '',
-    skills: '',
-    bio: '',
-    education: ''
+    name: "",
+    email: "",
+    phone: "",
+    location: "",
+    experience: "",
+    skills: "",
+    bio: "",
+    education: "",
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -33,28 +33,49 @@ const UserProfile: React.FC = () => {
 
   // Load user profile data on component mount
   useEffect(() => {
-    // This would typically fetch from an API
-    // For now, we'll use sample data
-    const sampleProfile: UserProfileData = {
-      id: 1,
-      name: 'محمد أحمد',
-      email: 'mohammed@example.com',
-      phone: '+964 771 234 5678',
-      location: 'بغداد، العراق',
-      experience: 'مطور واجهات أمامية بخبرة 3 سنوات',
-      skills: 'React, TypeScript, JavaScript, HTML, CSS, Node.js',
-      bio: 'مطور واجهات أمامية شغوف بتطوير تطبيقات الويب الحديثة. أحب التعلم والتطوير المستمر في مجال التقنيات الحديثة.',
-      education: 'بكالوريوس علوم الحاسوب - جامعة بغداد',
-      profileImage: ''
-    };
-    setProfile(sampleProfile);
+    // Load user data from localStorage
+    const userInfo = localStorage.getItem("userInfo");
+
+    if (userInfo) {
+      const user = JSON.parse(userInfo);
+      // Only set name and email from login data
+      // Other fields remain empty for user to fill
+      setProfile((prev) => ({
+        ...prev,
+        name: user.name || "",
+        email: user.email || "",
+        // Keep these fields empty for user to fill:
+        // phone: '',
+        // location: '',
+        // experience: '',
+        // skills: '',
+        // bio: '',
+        // education: ''
+      }));
+    } else {
+      // If no user data, keep all fields empty
+      setProfile({
+        name: "",
+        email: "",
+        phone: "",
+        location: "",
+        experience: "",
+        skills: "",
+        bio: "",
+        education: "",
+      });
+    }
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
-    setProfile(prev => ({
+    setProfile((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -62,16 +83,35 @@ const UserProfile: React.FC = () => {
     setLoading(true);
     try {
       // Here you would make an API call to save the profile
-      console.log('Saving profile:', profile);
-      
+      console.log("Saving profile:", profile);
+
+      // Update localStorage with new user information
+      const currentUserInfo = localStorage.getItem("userInfo");
+      if (currentUserInfo) {
+        const userInfo = JSON.parse(currentUserInfo);
+        // Update user info with new profile data
+        const updatedUserInfo = {
+          ...userInfo,
+          name: profile.name,
+          email: profile.email,
+          phone: profile.phone,
+          location: profile.location,
+          experience: profile.experience,
+          skills: profile.skills,
+          bio: profile.bio,
+          education: profile.education,
+        };
+        localStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
+      }
+
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       setIsEditing(false);
-      alert('تم حفظ البيانات بنجاح!');
+      alert("تم حفظ البيانات بنجاح!");
     } catch (error) {
-      console.error('Error saving profile:', error);
-      alert('حدث خطأ في حفظ البيانات');
+      console.error("Error saving profile:", error);
+      alert("حدث خطأ في حفظ البيانات");
     } finally {
       setLoading(false);
     }
@@ -79,8 +119,34 @@ const UserProfile: React.FC = () => {
 
   const handleCancel = () => {
     setIsEditing(false);
-    // Reset to original data
-    window.location.reload();
+    // Reset to original data from localStorage
+    const userInfo = localStorage.getItem("userInfo");
+
+    if (userInfo) {
+      const user = JSON.parse(userInfo);
+      setProfile({
+        name: user.name || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        location: user.location || "",
+        experience: user.experience || "",
+        skills: user.skills || "",
+        bio: user.bio || "",
+        education: user.education || "",
+      });
+    } else {
+      // If no user data, reset to empty
+      setProfile({
+        name: "",
+        email: "",
+        phone: "",
+        location: "",
+        experience: "",
+        skills: "",
+        bio: "",
+        education: "",
+      });
+    }
   };
 
   return (
@@ -106,10 +172,9 @@ const UserProfile: React.FC = () => {
             <div className="profile-actions">
               {!isEditing ? (
                 <>
-                  <button 
+                  <button
                     className="edit-btn"
-                    onClick={() => setIsEditing(true)}
-                  >
+                    onClick={() => setIsEditing(true)}>
                     <i className="fas fa-edit"></i>
                     تعديل البيانات
                   </button>
@@ -120,18 +185,14 @@ const UserProfile: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <button 
+                  <button
                     className="save-btn"
                     onClick={handleSave}
-                    disabled={loading}
-                  >
+                    disabled={loading}>
                     <i className="fas fa-save"></i>
-                    {loading ? 'جاري الحفظ...' : 'حفظ التغييرات'}
+                    {loading ? "جاري الحفظ..." : "حفظ التغييرات"}
                   </button>
-                  <button 
-                    className="cancel-btn"
-                    onClick={handleCancel}
-                  >
+                  <button className="cancel-btn" onClick={handleCancel}>
                     <i className="fas fa-times"></i>
                     إلغاء
                   </button>
@@ -246,7 +307,7 @@ const UserProfile: React.FC = () => {
                     />
                   ) : (
                     <div className="skills-display">
-                      {profile.skills.split(',').map((skill, index) => (
+                      {profile.skills.split(",").map((skill, index) => (
                         <span key={index} className="skill-tag">
                           {skill.trim()}
                         </span>
@@ -302,38 +363,12 @@ const UserProfile: React.FC = () => {
               </h2>
               <div className="section-content">
                 <div className="applications-list">
-                  <div className="application-item">
-                    <div className="application-info">
-                      <h4>مطور واجهات أمامية</h4>
-                      <p>شركة التقنيات المتقدمة</p>
-                      <span className="application-date">15 ديسمبر 2024</span>
-                    </div>
-                    <div className="application-status pending">
-                      <i className="fas fa-clock"></i>
-                      قيد المراجعة
-                    </div>
-                  </div>
-                  <div className="application-item">
-                    <div className="application-info">
-                      <h4>مطور React</h4>
-                      <p>شركة البرمجيات الذكية</p>
-                      <span className="application-date">12 ديسمبر 2024</span>
-                    </div>
-                    <div className="application-status accepted">
-                      <i className="fas fa-check"></i>
-                      مقبول
-                    </div>
-                  </div>
-                  <div className="application-item">
-                    <div className="application-info">
-                      <h4>مطور JavaScript</h4>
-                      <p>شركة الحلول الرقمية</p>
-                      <span className="application-date">10 ديسمبر 2024</span>
-                    </div>
-                    <div className="application-status rejected">
-                      <i className="fas fa-times"></i>
-                      مرفوض
-                    </div>
+                  <div className="no-applications">
+                    <i className="fas fa-briefcase"></i>
+                    <p>لم تقدم على أي وظيفة بعد</p>
+                    <p className="sub-text">
+                      ابدأ بتصفح الوظائف المتاحة وقدم على الوظيفة التي تناسبك
+                    </p>
                   </div>
                 </div>
               </div>

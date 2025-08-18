@@ -22,21 +22,21 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
   const handleLogout = () => {
     setIsAuthenticated(false);
     setUserName("");
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userInfo');
-    onNavigate('home');
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userInfo");
+    onNavigate("home");
     setIsMobileMenuOpen(false);
   };
 
   // Check authentication status on component mount
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    const userInfo = localStorage.getItem('userInfo');
-    
+    const token = localStorage.getItem("authToken");
+    const userInfo = localStorage.getItem("userInfo");
+
     if (token && userInfo) {
       setIsAuthenticated(true);
       const user = JSON.parse(userInfo);
-      setUserName(user.name || 'المستخدم');
+      setUserName(user.name || "المستخدم");
     }
   }, []);
 
@@ -84,7 +84,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
 
           <div className="header-controls">
             <LanguageSwitcher />
-            
+
             <button
               className="mobile-menu-btn"
               onClick={toggleMobileMenu}
@@ -105,7 +105,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                     currentPage === "home" ? "active" : ""
                   }`}>
                   <i className="fas fa-home nav-icon"></i>
-                  <span>{t('home')}</span>
+                  <span>{t("home")}</span>
                 </button>
               </li>
               <li>
@@ -115,7 +115,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                     currentPage === "jobs" ? "active" : ""
                   }`}>
                   <i className="fas fa-briefcase nav-icon"></i>
-                  <span>{t('jobs')}</span>
+                  <span>{t("jobs")}</span>
                 </button>
               </li>
               <li>
@@ -125,7 +125,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                     currentPage === "about" ? "active" : ""
                   }`}>
                   <i className="fas fa-info-circle nav-icon"></i>
-                  <span>{t('about')}</span>
+                  <span>{t("about")}</span>
                 </button>
               </li>
 
@@ -137,7 +137,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                       currentPage === "login" ? "active" : ""
                     }`}>
                     <i className="fas fa-sign-in-alt nav-icon"></i>
-                    <span>{t('login')}</span>
+                    <span>{t("login")}</span>
                   </button>
                 </li>
               ) : (
@@ -152,13 +152,13 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
                         onClick={() => handleNavigation("userprofile")}
                         className="dropdown-item">
                         <i className="fas fa-user"></i>
-                        {t('profile')}
+                        {t("profile")}
                       </button>
                       <button
                         onClick={handleLogout}
                         className="dropdown-item logout">
                         <i className="fas fa-sign-out-alt"></i>
-                        {t('logout')}
+                        {t("logout")}
                       </button>
                     </div>
                   </li>

@@ -7,6 +7,12 @@ interface HomeProps {
 
 const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   useEffect(() => {
+    // Check if the image exists
+    const testImage = new Image();
+    testImage.onload = () => console.log('Hero image preload successful');
+    testImage.onerror = () => console.log('Hero image preload failed');
+    testImage.src = '/images/hero-sec-img.gif';
+    
     // Counter animation function
     const animateCounters = () => {
       const counters = document.querySelectorAll(".stats-number");
@@ -82,7 +88,16 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               </div>
             </div>
             <div className="hero-image">
-              <img src="/images/hero-sec-img.gif" alt="Job Search Animation" />
+              <img 
+                src={`${process.env.PUBLIC_URL}/images/hero-sec-img.gif`}
+                alt="Job Search Animation"
+                onError={(e) => {
+                  console.log('GIF failed to load, trying fallback');
+                  e.currentTarget.src = "https://via.placeholder.com/500x400/3498db/ffffff?text=Job+Search+Animation";
+                }}
+                onLoad={() => console.log('Hero GIF loaded successfully')}
+                style={{ maxWidth: '100%', height: 'auto' }}
+              />
             </div>
           </div>
         </section>

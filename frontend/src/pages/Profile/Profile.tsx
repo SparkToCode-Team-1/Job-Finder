@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import './Profile.css';
-import { useLanguage } from '../../contexts/LanguageContext';
+import React, { useState } from "react";
+import "./Profile.css";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 interface ProfileProps {
   onNavigate: (page: string) => void;
@@ -10,48 +10,47 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
   const [isLogin, setIsLogin] = useState(true);
   const { t } = useLanguage();
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-    fullName: ''
+    email: "",
+    password: "",
+    confirmPassword: "",
+    fullName: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!isLogin && formData.password !== formData.confirmPassword) {
-      alert('كلمات المرور غير متطابقة');
+      alert("كلمات المرور غير متطابقة");
       return;
     }
 
     try {
       // Here you would make an API call to your authentication endpoint
-      console.log(isLogin ? 'Login attempt:' : 'Signup attempt:', formData);
-      
+      console.log(isLogin ? "Login attempt:" : "Signup attempt:", formData);
+
       // Simulate successful authentication
       const mockUserData = {
-        name: formData.fullName || 'محمد أحمد',
+        name: formData.fullName || "محمد أحمد",
         email: formData.email,
-        token: 'mock-jwt-token-12345'
+        token: "mock-jwt-token-12345",
       };
-      
+
       // Store authentication data
-      localStorage.setItem('authToken', mockUserData.token);
-      localStorage.setItem('userInfo', JSON.stringify(mockUserData));
-      
+      localStorage.setItem("authToken", mockUserData.token);
+      localStorage.setItem("userInfo", JSON.stringify(mockUserData));
+
       // Navigate to user profile
-      onNavigate('userprofile');
-      
+      onNavigate("userprofile");
     } catch (error) {
-      console.error('Authentication error:', error);
-      alert('حدث خطأ في تسجيل الدخول');
+      console.error("Authentication error:", error);
+      alert("حدث خطأ في تسجيل الدخول");
     }
   };
 
@@ -61,8 +60,8 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
         <div className="auth-container">
           <div className="auth-form-container">
             <div className="auth-header">
-              <h1>{isLogin ? t('loginTitle') : t('signupTitle')}</h1>
-              <p>{isLogin ? t('loginSubtitle') : t('signupSubtitle')}</p>
+              <h1>{isLogin ? t("loginTitle") : t("signupTitle")}</h1>
+              <p>{isLogin ? t("loginSubtitle") : t("signupSubtitle")}</p>
             </div>
 
             <form onSubmit={handleSubmit} className="auth-form">
@@ -135,20 +134,22 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
               )}
 
               <button type="submit" className="auth-btn">
-                <i className={`fas ${isLogin ? 'fa-sign-in-alt' : 'fa-user-plus'}`}></i>
-                {isLogin ? 'تسجيل الدخول' : 'إنشاء حساب'}
+                <i
+                  className={`fas ${
+                    isLogin ? "fa-sign-in-alt" : "fa-user-plus"
+                  }`}></i>
+                {isLogin ? "تسجيل الدخول" : "إنشاء حساب"}
               </button>
             </form>
 
             <div className="auth-switch">
               <p>
-                {isLogin ? 'لا تملك حساباً؟' : 'تملك حساباً بالفعل؟'}
+                {isLogin ? "لا تملك حساباً؟" : "تملك حساباً بالفعل؟"}
                 <button
                   type="button"
                   onClick={() => setIsLogin(!isLogin)}
-                  className="switch-btn"
-                >
-                  {isLogin ? 'إنشاء حساب جديد' : 'تسجيل الدخول'}
+                  className="switch-btn">
+                  {isLogin ? "إنشاء حساب جديد" : "تسجيل الدخول"}
                 </button>
               </p>
             </div>
