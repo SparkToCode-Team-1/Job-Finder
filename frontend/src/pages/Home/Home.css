@@ -95,11 +95,23 @@
   font-size: 1.5rem;
   margin-bottom: 1rem;
   color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.feature-card h3 i {
+  color: #667eea;
 }
 
 .feature-card p {
   color: #7f8c8d;
   line-height: 1.6;
+}
+
+.demo-section {
+  margin-top: 4rem;
 }
 
 @media (max-width: 768px) {

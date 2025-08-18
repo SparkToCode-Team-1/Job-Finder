@@ -86,4 +86,23 @@ public class JobController {
         Pageable safe = PageRequest.of(page, size, pageable.getSort());
         return jobRepo.findAll(safe);
     }
+
+    // Add sample job endpoint for testing
+    // @PostMapping("/add-sample")
+    // public ResponseEntity<Jobs> addSampleJob() {
+    //     Jobs sampleJob = new Jobs();
+    //     sampleJob.setSourceId("jobboard1");
+    //     sampleJob.setSourceJobId("001");
+    //     sampleJob.setTitle("Senior Software Engineer");
+    //     sampleJob.setCompany("TechCorp Solutions");
+    //     sampleJob.setLocation("New York, NY");
+    //     sampleJob.setSalaryMin(new java.math.BigDecimal("90000"));
+    //     sampleJob.setSalaryMax(new java.math.BigDecimal("130000"));
+    //     sampleJob.setDescription("We are looking for an experienced Senior Software Engineer to join our growing team. You will be responsible for designing and implementing scalable web applications using modern technologies. Requirements include 5+ years of experience in Java/Spring Boot, React, and database design.");
+    //     sampleJob.setJobType("Full-time");
+    //     sampleJob.setPostedAt(java.time.ZonedDateTime.now().minusDays(1));
+        
+    //     Jobs savedJob = jobRepo.save(sampleJob);
+    //     return ResponseEntity.ok(savedJob);
+    // }
 }

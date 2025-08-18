@@ -17,18 +17,21 @@ const Jobs: React.FC = () => {
         setLoading(true);
         const data = await fetcher(API_ENDPOINTS.jobs);
         // Map backend entity to frontend type when necessary
-        const normalized: Job[] = (Array.isArray(data) ? data : data?.content || []).map(
-          (j: any) => ({
-            id: j.id,
-            title: j.title,
-            company: j.company,
-            location: j.location,
-            salary: j.salaryMin && j.salaryMax ? `${j.salaryMin} - ${j.salaryMax}` : j.salaryMin || j.salaryMax || "",
-            type: (j.jobType || "").toString() as Job["type"],
-            description: j.description,
-            postedDate: j.postedAt,
-          })
-        );
+        const normalized: Job[] = (
+          Array.isArray(data) ? data : data?.content || []
+        ).map((j: any) => ({
+          id: j.id,
+          title: j.title,
+          company: j.company,
+          location: j.location,
+          salary:
+            j.salaryMin && j.salaryMax
+              ? `${j.salaryMin} - ${j.salaryMax}`
+              : j.salaryMin || j.salaryMax || "",
+          type: (j.jobType || "").toString() as Job["type"],
+          description: j.description,
+          postedDate: j.postedAt,
+        }));
         setJobs(normalized);
         setError(null);
       } catch (e: any) {
@@ -46,7 +49,9 @@ const Jobs: React.FC = () => {
       const matchesSearch = [job.title, job.company]
         .filter(Boolean)
         .some((v) => v.toLowerCase().includes(searchTerm.toLowerCase()));
-      const matchesLocation = locationFilter ? job.location === locationFilter : true;
+      const matchesLocation = locationFilter
+        ? job.location === locationFilter
+        : true;
       const matchesType = typeFilter ? job.type === (typeFilter as any) : true;
       return matchesSearch && matchesLocation && matchesType;
     });
@@ -58,18 +63,20 @@ const Jobs: React.FC = () => {
         <div className="jobs-header">
           <h1>Browse Jobs</h1>
           <div className="search-filters">
-            <input
-              type="text"
-              placeholder="Search jobs..."
-              className="search-input"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            <div className="search-input-wrapper">
+              <i className="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search jobs..."
+                className="search-input"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
             <select
               className="filter-select"
               value={locationFilter}
-              onChange={(e) => setLocationFilter(e.target.value)}
-            >
+              onChange={(e) => setLocationFilter(e.target.value)}>
               <option value="">All Locations</option>
               <option value="Remote">Remote</option>
               <option value="San Francisco, CA">San Francisco</option>
@@ -78,8 +85,7 @@ const Jobs: React.FC = () => {
             <select
               className="filter-select"
               value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value)}
-            >
+              onChange={(e) => setTypeFilter(e.target.value)}>
               <option value="">All Types</option>
               <option value="Full-time">Full-time</option>
               <option value="Part-time">Part-time</option>
@@ -102,12 +108,25 @@ const Jobs: React.FC = () => {
                     <h3>{job.title}</h3>
                     <p className="company">{job.company}</p>
                     <div className="job-details">
-                      <span className="location">📍 {job.location}</span>
-                      {job.salary && <span className="salary">💰 {job.salary}</span>}
-                      {job.type && <span className="type">⏰ {job.type}</span>}
+                      <span className="location">
+                        <i className="fas fa-map-marker-alt"></i> {job.location}
+                      </span>
+                      {job.salary && (
+                        <span className="salary">
+                          <i className="fas fa-dollar-sign"></i> {job.salary}
+                        </span>
+                      )}
+                      {job.type && (
+                        <span className="type">
+                          <i className="fas fa-clock"></i> {job.type}
+                        </span>
+                      )}
                     </div>
                   </div>
-                  <button className="apply-btn">Apply Now</button>
+                  <button className="apply-btn">
+                    <i className="fas fa-paper-plane"></i>
+                    Apply Now
+                  </button>
                 </div>
               ))
             ) : (

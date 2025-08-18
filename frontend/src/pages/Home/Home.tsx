@@ -1,4 +1,5 @@
 import React from "react";
+import TailwindDemo from "../../components/TailwindDemo/TailwindDemo";
 import "./Home.css";
 
 interface HomeProps {
@@ -17,16 +18,14 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               the world.
             </p>
             <div className="hero-actions">
-              <button 
-                onClick={() => onNavigate("jobs")} 
-                className="btn btn-primary"
-              >
+              <button
+                onClick={() => onNavigate("jobs")}
+                className="btn btn-primary">
                 Browse Jobs
               </button>
-              <button 
-                onClick={() => onNavigate("profile")} 
-                className="btn btn-secondary"
-              >
+              <button
+                onClick={() => onNavigate("profile")}
+                className="btn btn-secondary">
                 Create Profile
               </button>
             </div>
@@ -37,27 +36,37 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           <h2>Why Choose Job Finder?</h2>
           <div className="features-grid">
             <div className="feature-card">
-              <h3>🎯 Targeted Search</h3>
+              <h3>
+                <i className="fas fa-bullseye"></i> Targeted Search
+              </h3>
               <p>
                 Find jobs that match your skills and preferences with our
                 advanced search filters.
               </p>
             </div>
             <div className="feature-card">
-              <h3>🏢 Top Companies</h3>
+              <h3>
+                <i className="fas fa-building"></i> Top Companies
+              </h3>
               <p>
                 Connect with leading companies and startups looking for talented
                 professionals.
               </p>
             </div>
             <div className="feature-card">
-              <h3>📊 Career Growth</h3>
+              <h3>
+                <i className="fas fa-chart-line"></i> Career Growth
+              </h3>
               <p>
                 Access resources and opportunities to advance your career to the
                 next level.
               </p>
             </div>
           </div>
+        </section>
+
+        <section className="demo-section">
+          <TailwindDemo />
         </section>
       </div>
     </div>
