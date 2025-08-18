@@ -1,0 +1,5 @@
+[
+  {"id": 1, "title": "Software Engineer", "company": "OmanTech", "location": "Muscat", "salary": 1200},
+  {"id": 2, "title": "Data Analyst", "company": "Al-Masirah", "location": "Salalah", "salary": 1000},
+  {"id": 3, "title": "Project Manager", "company": "InnovateOman", "location": "Sohar", "salary": 1500}
+]
