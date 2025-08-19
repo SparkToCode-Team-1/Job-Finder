@@ -166,4 +166,19 @@ public class Jobs {
     public void setIngestedAt(ZonedDateTime ingestedAt) {
         this.ingestedAt = ingestedAt;
     }
+    public void setSentimentScore(Float sentimentScore) { 
+            this.sentimentScore = sentimentScore;
+    }
+    public String getSentimentLabel() {
+            return sentimentLabel;
+    }
+    public void setSentimentLabel(String sentimentLabel) {
+            this.sentimentLabel = sentimentLabel;
+    }
+    public String getSentimentRationale() {
+            return sentimentRationale;
+    }
+    public void setSentimentRationale(String sentimentRationale) { 
+            this.sentimentRationale = sentimentRationale;
+    }
 }
