@@ -53,7 +53,15 @@ public class Jobs {
 
     @Column(name = "ingested_at", columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
     private ZonedDateTime ingestedAt = ZonedDateTime.now();
-
+        
+    // ---- NEW sentiment columns ----
+    @Column(name = "sentiment_score")
+    private Float sentimentScore;
+    @Column(name = "sentiment_label")
+    private String sentimentLabel;
+    @Column(name = "sentiment_rationale", columnDefinition = "TEXT")
+    private String sentimentRationale;
+        
     // Getters and Setters
     public Integer getId() {
         return id;
