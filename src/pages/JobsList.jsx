@@ -1,14 +1,13 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer } from "react";
 import JobCard from "../components/JobCard.jsx";
-import JobModal from "./JobModal.jsx"
 import { fetchJobs } from "../api/jobs.js";
 
 const initialState = {
   jobs: [],
-  status: "idle",   
+  status: "idle",
   error: null,
   savedIds: new Set(),
-  query: ""         
+  query: ""
 };
 
 function reducer(state, action) {
@@ -33,7 +32,7 @@ function reducer(state, action) {
 
 export default function JobsList() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [selectedJob, setSelectedJob] = useState(null);
+
   useEffect(() => {
     const controller = new AbortController();
     dispatch({ type: "LOAD_START" });
@@ -44,7 +43,6 @@ export default function JobsList() {
   }, []);
 
   const handleSave = (job) => dispatch({ type: "TOGGLE_SAVE", id: job.id });
-  const handleView = (job) => setSelectedJob(job);
 
   const filtered = state.query
     ? state.jobs.filter(j =>
@@ -75,20 +73,18 @@ export default function JobsList() {
 
       {state.status === "error" && (
         <div className="error">
-          <p>حدث خطأ أثناء جلب الوظائف: {state.error}</p>
+          <p>Error: {state.error}</p>
           <button onClick={() => {
             dispatch({ type: "LOAD_START" });
             fetchJobs()
               .then(data => dispatch({ type: "LOAD_SUCCESS", payload: data }))
               .catch(err => dispatch({ type: "LOAD_ERROR", error: err.message || "Failed" }));
-          }}>إعادة المحاولة</button>
+          }}>Retry</button>
         </div>
       )}
-
       {state.status === "success" && filtered.length === 0 && (
-        <p className="muted">لا توجد وظائف مطابقة لبحثك.</p>
+        <p className="muted">No jobs matching yout search</p>
       )}
-
       {state.status === "success" && filtered.length > 0 && (
         <div className="grid">
           {filtered.map(job => (
@@ -96,12 +92,10 @@ export default function JobsList() {
               key={job.id}
               job={job}
               onSave={handleSave}
-              onView={handleView}
             />
           ))}
-      </div>
-    )}
-    {selectedJob && <JobModal job={selectedJob} onClose={() => setSelectedJob(null)} />}
-  </section>
+        </div>
+      )}
+    </section>
   );
 }
