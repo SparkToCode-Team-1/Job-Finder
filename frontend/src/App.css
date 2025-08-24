@@ -1,0 +1,98 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px 0;
+}
+
+/* RTL Support */
+[dir="rtl"] body {
+  font-family: "Segoe UI", Tahoma, Arial, Helvetica, sans-serif;
+}
+
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="ltr"] {
+  text-align: left;
+}
+
+/* RTL input and form styles */
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="ltr"] input,
+[dir="ltr"] textarea,
+[dir="ltr"] select {
+  text-align: left;
+  direction: ltr;
+}
+
+/* Button alignment */
+[dir="rtl"] .auth-btn,
+[dir="rtl"] button {
+  font-family: inherit;
+}
+
+/* Header controls for RTL */
+[dir="rtl"] .header-controls {
+  flex-direction: row-reverse;
+}
+
+/* Navigation RTL */
+[dir="rtl"] .nav-list {
+  flex-direction: row-reverse;
+}
+
+/* Social buttons direction */
+[dir="rtl"] .social-buttons {
+  flex-direction: row-reverse;
+}
+
+/* Form direction */
+[dir="rtl"] .form-row {
+  direction: rtl;
+}
+
+[dir="ltr"] .form-row {
+  direction: ltr;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
