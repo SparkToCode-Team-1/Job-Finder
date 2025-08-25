@@ -21,6 +21,7 @@ interface AuthContextType {
   register: (userData: RegisterRequest) => Promise<void>;
   logout: () => void;
   updateUser: (userData: User) => void;
+  reloadUser: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -96,6 +97,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.setItem("userData", JSON.stringify(updatedUser));
   };
 
+  const reloadUser = () => {
+    try {
+      const currentUser = apiService.getCurrentUser();
+      if (currentUser && apiService.isAuthenticated()) {
+        setUser(currentUser);
+      }
+    } catch (error) {
+      console.error("Failed to reload user:", error);
+    }
+  };
+
   const value: AuthContextType = {
     user,
     isAuthenticated: !!user,
@@ -104,6 +116,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     register,
     logout,
     updateUser,
+    reloadUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

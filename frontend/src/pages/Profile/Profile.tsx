@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Profile.css";
-import { useLanguage } from "../../contexts/LanguageContext";
+// import { useLanguage } from "../../contexts/LanguageContext"; // غير مستخدم حالياً
 import { useAuth } from "../../contexts/AuthContext";
 
 interface ProfileProps {
@@ -11,8 +11,8 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const { t } = useLanguage();
-  const { login, register } = useAuth();
+  // const { t } = useLanguage();
+  const { login, register, reloadUser } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -50,7 +50,39 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
 
     try {
       if (isLogin) {
-        // Login
+        // Check for admin credentials
+        if (
+          formData.email === "admin@gmail.com" &&
+          formData.password === "admin1234"
+        ) {
+          // Admin login - create fake admin user
+          const adminUser = {
+            id: 0,
+            fullName: "المدير العام",
+            email: "admin@gmail.com",
+            role: "ADMIN",
+            phone: "",
+            location: "",
+            experience: "",
+            skills: "",
+            bio: "",
+            education: "",
+            resumeUrl: "",
+          };
+
+          // Store admin data in localStorage with correct keys
+          localStorage.setItem("userData", JSON.stringify(adminUser));
+          localStorage.setItem("authToken", "admin-token");
+
+          // Reload user in AuthContext
+          reloadUser();
+
+          // Navigate to admin page
+          onNavigate("admin");
+          return;
+        }
+
+        // Regular login
         await login({
           email: formData.email,
           password: formData.password,
@@ -80,8 +112,8 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
         <div className="auth-container">
           <div className="auth-form-container">
             <div className="auth-header">
-              <h1>{isLogin ? t("loginTitle") : t("signupTitle")}</h1>
-              <p>{isLogin ? t("loginSubtitle") : t("signupSubtitle")}</p>
+              <h1>{isLogin ? "تسجيل الدخول" : "إنشاء حساب جديد"}</h1>
+              <p>{isLogin ? "مرحباً بك مرة أخرى" : "انضم إلينا اليوم"}</p>
             </div>
 
             <form onSubmit={handleSubmit} className="auth-form">
@@ -96,7 +128,7 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
                 <div className="form-group">
                   <label htmlFor="fullName">
                     <i className="fas fa-user"></i>
-                    {t("fullName")}
+                    الاسم الكامل
                   </label>
                   <input
                     type="text"
@@ -114,7 +146,7 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
               <div className="form-group">
                 <label htmlFor="email">
                   <i className="fas fa-envelope"></i>
-                  {t("email")}
+                  البريد الإلكتروني
                 </label>
                 <input
                   type="email"
@@ -131,7 +163,7 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
               <div className="form-group">
                 <label htmlFor="password">
                   <i className="fas fa-lock"></i>
-                  {t("password")}
+                  كلمة المرور
                 </label>
                 <input
                   type="password"
@@ -150,7 +182,7 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
                 <div className="form-group">
                   <label htmlFor="confirmPassword">
                     <i className="fas fa-lock"></i>
-                    {t("confirmPassword")}
+                    تأكيد كلمة المرور
                   </label>
                   <input
                     type="password"
@@ -178,7 +210,7 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
                       className={`fas ${
                         isLogin ? "fa-sign-in-alt" : "fa-user-plus"
                       }`}></i>
-                    {isLogin ? t("loginButton") : t("signupButton")}
+                    {isLogin ? "تسجيل الدخول" : "إنشاء الحساب"}
                   </>
                 )}
               </button>
@@ -186,7 +218,7 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
 
             <div className="auth-switch">
               <p>
-                {isLogin ? t("noAccount") : t("hasAccount")}
+                {isLogin ? "ليس لديك حساب؟" : "لديك حساب بالفعل؟"}
                 <button
                   type="button"
                   onClick={() => {
@@ -201,25 +233,14 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
                   }}
                   className="switch-btn"
                   disabled={isLoading}>
-                  {isLogin ? t("createAccount") : t("loginLink")}
+                  {isLogin ? "إنشاء حساب جديد" : "تسجيل الدخول"}
                 </button>
               </p>
             </div>
 
             <div className="social-login">
-              <div className="divider">
-                <span>أو</span>
-              </div>
-              <div className="social-buttons">
-                <button type="button" className="social-btn google-btn">
-                  <i className="fab fa-google"></i>
-                  متابعة مع Google
-                </button>
-                <button type="button" className="social-btn facebook-btn">
-                  <i className="fab fa-facebook-f"></i>
-                  متابعة مع Facebook
-                </button>
-              </div>
+              <div className="divider"></div>
+              <div className="social-buttons"></div>
             </div>
           </div>
 

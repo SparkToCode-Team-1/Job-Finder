@@ -100,3 +100,5 @@ Job-Finder-frontEnd/
 ## License
 
 This project is licensed under the MIT License.
+
+## Feel free to use and modify it as per your needs :) CODED with ❤️ by [team 1 spark code] -> coded.om <3

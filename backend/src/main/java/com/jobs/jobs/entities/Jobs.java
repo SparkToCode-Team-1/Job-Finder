@@ -1,7 +1,6 @@
 package com.jobs.jobs.entities;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -33,16 +32,19 @@ public class Jobs {
     private String location;
 
     @Column(name = "salary_min")
-    private BigDecimal salaryMin;
+    private Double salaryMin;
 
     @Column(name = "salary_max")
-    private BigDecimal salaryMax;
+    private Double salaryMax;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "job_type")
     private String jobType;
+
+    @Column(name = "category")
+    private String category;
 
     @Column(name = "posted_at")
     private ZonedDateTime postedAt;
@@ -102,19 +104,19 @@ public class Jobs {
         this.location = location;
     }
 
-    public BigDecimal getSalaryMin() {
+    public Double getSalaryMin() {
         return salaryMin;
     }
 
-    public void setSalaryMin(BigDecimal salaryMin) {
+    public void setSalaryMin(Double salaryMin) {
         this.salaryMin = salaryMin;
     }
 
-    public BigDecimal getSalaryMax() {
+    public Double getSalaryMax() {
         return salaryMax;
     }
 
-    public void setSalaryMax(BigDecimal salaryMax) {
+    public void setSalaryMax(Double salaryMax) {
         this.salaryMax = salaryMax;
     }
 
@@ -132,6 +134,14 @@ public class Jobs {
 
     public void setJobType(String jobType) {
         this.jobType = jobType;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public ZonedDateTime getPostedAt() {

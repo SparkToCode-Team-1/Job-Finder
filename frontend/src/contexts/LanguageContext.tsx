@@ -88,13 +88,33 @@ const translations = {
 
     // Home Page
     heroTitle: "اعثر على وظيفة أحلامك",
-    heroSubtitle: "اكتشف آلاف الفرص الوظيفية من أفضل الشركات",
+    heroSubtitle: "اكتشف آلاف الفرص الوظيفية من أفضل الشركات عالمياً",
     getStarted: "ابدأ الآن",
     browseJobs: "تصفح الوظائف",
+    createProfile: "إنشاء ملف شخصي",
+    allJobs: "جميع الوظائف",
+    findJobs: "البحث عن الوظائف",
     jobsPosted: "وظيفة متاحة",
     companies: "شركة",
     successfulHires: "توظيف ناجح",
     activeUsers: "مستخدم نشط",
+
+    // Search Bar
+    jobTitlePlaceholder: "المسمى الوظيفي، الكلمات المفتاحية...",
+    locationPlaceholder: "الموقع، المدينة...",
+    technology: "تكنولوجيا",
+    healthcare: "الرعاية الصحية",
+    finance: "المالية",
+    marketing: "التسويق",
+    engineering: "الهندسة",
+    design: "التصميم",
+    sales: "المبيعات",
+    popular: "شائع:",
+    remoteWork: "عمل عن بُعد",
+    fullTime: "دوام كامل",
+    seniorLevel: "مستوى أول",
+    startup: "شركة ناشئة",
+    tech: "تقنية",
 
     // Features
     easySearch: "بحث سهل",
@@ -182,13 +202,34 @@ const translations = {
 
     // Home Page
     heroTitle: "Find Your Dream Job",
-    heroSubtitle: "Discover thousands of job opportunities from top companies",
+    heroSubtitle:
+      "Discover thousands of opportunities from top companies worldwide",
     getStarted: "Get Started",
     browseJobs: "Browse Jobs",
+    createProfile: "Create Profile",
+    allJobs: "All Jobs",
+    findJobs: "Find Jobs",
     jobsPosted: "Jobs Posted",
     companies: "Companies",
     successfulHires: "Successful Hires",
     activeUsers: "Active Users",
+
+    // Search Bar
+    jobTitlePlaceholder: "Job title, keywords...",
+    locationPlaceholder: "Location, city...",
+    technology: "Technology",
+    healthcare: "Healthcare",
+    finance: "Finance",
+    marketing: "Marketing",
+    engineering: "Engineering",
+    design: "Design",
+    sales: "Sales",
+    popular: "Popular:",
+    remoteWork: "Remote Work",
+    fullTime: "Full-time",
+    seniorLevel: "Senior Level",
+    startup: "Startup",
+    tech: "Tech",
 
     // Features
     easySearch: "Easy Search",

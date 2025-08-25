@@ -13,7 +13,7 @@
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 12rem 0;
 }
 
 .auth-form-container {
@@ -192,7 +192,7 @@
 
 .auth-image img {
   width: 100%;
-  max-width: 400px;
+  max-width: 600px;
   height: auto;
   border-radius: 15px;
 }

@@ -10,6 +10,11 @@ module.exports = {
           600: "#764ba2",
           900: "#1e3a8a",
         },
+        main: "#3DA4FF",
+        secondary: "#275AA6",
+        third: "#3EECFF",
+        fourth: "#3FFFB2",
+        fifth: "#CED3D9",
       },
       animation: {
         "fade-in": "fadeIn 0.5s ease-in",

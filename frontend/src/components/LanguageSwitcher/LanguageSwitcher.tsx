@@ -5,21 +5,21 @@ import "./LanguageSwitcher.css";
 const LanguageSwitcher: React.FC = () => {
   const { language, setLanguage } = useLanguage();
 
+  const toggleLanguage = () => {
+    setLanguage(language === "ar" ? "en" : "ar");
+  };
+
+  const currentLanguageText = language === "ar" ? "العربية" : "English";
+  const currentLanguageTitle = language === "ar" ? "العربية" : "English";
+
   return (
     <div className="language-switcher">
       <button
-        className={`lang-btn ${language === "ar" ? "active" : ""}`}
-        onClick={() => setLanguage("ar")}
-        title="العربية">
+        className="lang-btn "
+        onClick={toggleLanguage}
+        title={currentLanguageTitle}>
         <i className="fas fa-globe"></i>
-        <span>العربية</span>
-      </button>
-      <button
-        className={`lang-btn ${language === "en" ? "active" : ""}`}
-        onClick={() => setLanguage("en")}
-        title="English">
-        <i className="fas fa-globe"></i>
-        <span>English</span>
+        <span>{currentLanguageText}</span>
       </button>
     </div>
   );
