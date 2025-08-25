@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Job API</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f5f5f5;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #333;
+        text-align: center;
+      }
+      .button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 10px 5px;
+      }
+      .button:hover {
+        background-color: #0056b3;
+      }
+      .success {
+        background-color: #28a745;
+      }
+      .success:hover {
+        background-color: #1e7e34;
+      }
+      #result {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 4px;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        white-space: pre-wrap;
+      }
+      .loading {
+        color: #007bff;
+        font-style: italic;
+      }
+      .error {
+        color: #dc3545;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+      }
+      .success-msg {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🔧 Job Finder API Test Panel</h1>
+
+      <div>
+        <button class="button" onclick="checkStatus()">
+          📊 Check Database Status
+        </button>
+        <button class="button" onclick="getJobsCount()">
+          🔢 Get Jobs Count
+        </button>
+        <button class="button success" onclick="addSampleJobs()">
+          ➕ Add Sample Jobs
+        </button>
+        <button class="button" onclick="getAllJobs()">📋 Get All Jobs</button>
+        <button class="button" onclick="testFrontendConnection()">
+          🌐 Test Frontend
+        </button>
+      </div>
+
+      <div id="result"></div>
+    </div>
+
+    <script>
+      const resultDiv = document.getElementById("result");
+      const API_BASE = "http://localhost:8080/api/jobs";
+      const FRONTEND_URL = "http://localhost:3001";
+
+      function showLoading(message) {
+        resultDiv.className = "loading";
+        resultDiv.textContent = `⏳ ${message}...`;
+      }
+
+      function showResult(data, isError = false) {
+        resultDiv.className = isError ? "error" : "success-msg";
+        if (typeof data === "object") {
+          resultDiv.textContent = JSON.stringify(data, null, 2);
+        } else {
+          resultDiv.textContent = data;
+        }
+      }
+
+      async function checkStatus() {
+        showLoading("Checking database status");
+        try {
+          const response = await fetch(`${API_BASE}/status`);
+          const data = await response.text();
+          showResult(data);
+        } catch (error) {
+          showResult(`Error: ${error.message}`, true);
+        }
+      }
+
+      async function getJobsCount() {
+        showLoading("Getting jobs count");
+        try {
+          const response = await fetch(`${API_BASE}/count`);
+          const data = await response.text();
+          showResult(data);
+        } catch (error) {
+          showResult(`Error: ${error.message}`, true);
+        }
+      }
+
+      async function addSampleJobs() {
+        showLoading("Adding sample jobs");
+        try {
+          const response = await fetch(`${API_BASE}/add-sample`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const data = await response.text();
+          showResult(data);
+        } catch (error) {
+          showResult(`Error: ${error.message}`, true);
+        }
+      }
+
+      async function getAllJobs() {
+        showLoading("Fetching all jobs");
+        try {
+          const response = await fetch(API_BASE);
+          const data = await response.json();
+          showResult(
+            `Found ${data.length} jobs:\n\n${data
+              .map(
+                (job) =>
+                  `📍 ${job.title} at ${job.company} (${
+                    job.location
+                  }) - Category: ${job.category || "N/A"}`
+              )
+              .join("\n")}`
+          );
+        } catch (error) {
+          showResult(`Error: ${error.message}`, true);
+        }
+      }
+
+      async function testFrontendConnection() {
+        showLoading("Testing frontend connection");
+        try {
+          // Try to fetch from frontend
+          const response = await fetch(FRONTEND_URL);
+          if (response.ok) {
+            showResult(`✅ Frontend is accessible at ${FRONTEND_URL}`);
+          } else {
+            showResult(`❌ Frontend returned status: ${response.status}`, true);
+          }
+        } catch (error) {
+          showResult(`❌ Frontend connection error: ${error.message}`, true);
+        }
+      }
+
+      // Auto-check status on page load
+      window.onload = function () {
+        checkStatus();
+      };
+    </script>
+  </body>
+</html>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Profile.css";
-import { useLanguage } from "../../contexts/LanguageContext";
+import { useLanguage } from "../../contexts/LanguageContext"; // استخدام الترجمة الآن
+import { useAuth } from "../../contexts/AuthContext";
 
 interface ProfileProps {
   onNavigate: (page: string) => void;
@@ -8,49 +9,102 @@ interface ProfileProps {
 
 const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
   const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const { t } = useLanguage();
+  const { login, register, reloadUser } = useAuth();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     confirmPassword: "",
     fullName: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+    // Clear error when user types
+    if (error) setError("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError("");
 
+    // Validation
     if (!isLogin && formData.password !== formData.confirmPassword) {
-      alert("كلمات المرور غير متطابقة");
+      setError(t("passwordMismatch"));
+      setIsLoading(false);
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError(t("passwordMinLength"));
+      setIsLoading(false);
       return;
     }
 
     try {
-      // Here you would make an API call to your authentication endpoint
-      console.log(isLogin ? "Login attempt:" : "Signup attempt:", formData);
+      if (isLogin) {
+        // Check for admin credentials
+        if (
+          formData.email === "admin@gmail.com" &&
+          formData.password === "admin1234"
+        ) {
+          // Admin login - create fake admin user
+          const adminUser = {
+            id: 0,
+            fullName: "المدير العام",
+            email: "admin@gmail.com",
+            role: "ADMIN",
+            phone: "",
+            location: "",
+            experience: "",
+            skills: "",
+            bio: "",
+            education: "",
+            resumeUrl: "",
+          };
 
-      // Simulate successful authentication
-      const mockUserData = {
-        name: formData.fullName || "محمد أحمد",
-        email: formData.email,
-        token: "mock-jwt-token-12345",
-      };
+          // Store admin data in localStorage with correct keys
+          localStorage.setItem("userData", JSON.stringify(adminUser));
+          localStorage.setItem("authToken", "admin-token");
 
-      // Store authentication data
-      localStorage.setItem("authToken", mockUserData.token);
-      localStorage.setItem("userInfo", JSON.stringify(mockUserData));
+          // Reload user in AuthContext
+          reloadUser();
 
-      // Navigate to user profile
+          // Navigate to admin page
+          onNavigate("admin");
+          return;
+        }
+
+        // Regular login
+        await login({
+          email: formData.email,
+          password: formData.password,
+        });
+      } else {
+        // Register
+        await register({
+          fullName: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+        });
+      }
+
+      // Success - navigate to user profile
       onNavigate("userprofile");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Authentication error:", error);
-      alert("حدث خطأ في تسجيل الدخول");
+      setError(error.message || t("genericError"));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -65,11 +119,18 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
             </div>
 
             <form onSubmit={handleSubmit} className="auth-form">
+              {error && (
+                <div className="error-message">
+                  <i className="fas fa-exclamation-triangle"></i>
+                  {error}
+                </div>
+              )}
+
               {!isLogin && (
                 <div className="form-group">
                   <label htmlFor="fullName">
                     <i className="fas fa-user"></i>
-                    الاسم الكامل
+                    {t("fullName")}
                   </label>
                   <input
                     type="text"
@@ -77,8 +138,9 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
                     name="fullName"
                     value={formData.fullName}
                     onChange={handleInputChange}
-                    placeholder="أدخل اسمك الكامل"
+                    placeholder={t("fullNamePlaceholder")}
                     required
+                    disabled={isLoading}
                   />
                 </div>
               )}
@@ -86,7 +148,7 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
               <div className="form-group">
                 <label htmlFor="email">
                   <i className="fas fa-envelope"></i>
-                  البريد الإلكتروني
+                  {t("email")}
                 </label>
                 <input
                   type="email"
@@ -94,85 +156,131 @@ const Profile: React.FC<ProfileProps> = ({ onNavigate }) => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  placeholder="أدخل بريدك الإلكتروني"
+                  placeholder={t("emailPlaceholder")}
                   required
+                  disabled={isLoading}
                 />
               </div>
 
               <div className="form-group">
                 <label htmlFor="password">
                   <i className="fas fa-lock"></i>
-                  كلمة المرور
+                  {t("password")}
                 </label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  placeholder="أدخل كلمة المرور"
-                  required
-                />
+                <div className="password-wrapper">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder={t("passwordPlaceholder")}
+                    required
+                    disabled={isLoading}
+                    minLength={6}
+                  />
+                  <button
+                    type="button"
+                    className="toggle-password"
+                    onClick={() => setShowPassword((p) => !p)}
+                    aria-label={
+                      showPassword ? t("hidePassword") : t("showPassword")
+                    }>
+                    <i
+                      className={`fas ${
+                        showPassword ? "fa-eye-slash" : "fa-eye"
+                      }`}></i>
+                  </button>
+                </div>
               </div>
 
               {!isLogin && (
                 <div className="form-group">
                   <label htmlFor="confirmPassword">
                     <i className="fas fa-lock"></i>
-                    تأكيد كلمة المرور
+                    {t("confirmPassword")}
                   </label>
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleInputChange}
-                    placeholder="أكد كلمة المرور"
-                    required
-                  />
+                  <div className="password-wrapper">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      value={formData.confirmPassword}
+                      onChange={handleInputChange}
+                      placeholder={t("confirmPasswordPlaceholder")}
+                      required
+                      disabled={isLoading}
+                      minLength={6}
+                    />
+                    <button
+                      type="button"
+                      className="toggle-password"
+                      onClick={() => setShowConfirmPassword((p) => !p)}
+                      aria-label={
+                        showConfirmPassword
+                          ? t("hidePassword")
+                          : t("showPassword")
+                      }>
+                      <i
+                        className={`fas ${
+                          showConfirmPassword ? "fa-eye-slash" : "fa-eye"
+                        }`}></i>
+                    </button>
+                  </div>
                 </div>
               )}
 
-              <button type="submit" className="auth-btn">
-                <i
-                  className={`fas ${
-                    isLogin ? "fa-sign-in-alt" : "fa-user-plus"
-                  }`}></i>
-                {isLogin ? "تسجيل الدخول" : "إنشاء حساب"}
+              <button type="submit" className="auth-btn" disabled={isLoading}>
+                {isLoading ? (
+                  <>
+                    <i className="fas fa-spinner fa-spin"></i>
+                    {isLogin ? t("loggingIn") : t("signingUp")}
+                  </>
+                ) : (
+                  <>
+                    <i
+                      className={`fas ${
+                        isLogin ? "fa-sign-in-alt" : "fa-user-plus"
+                      }`}></i>
+                    {isLogin ? t("loginButton") : t("signupButton")}
+                  </>
+                )}
               </button>
             </form>
 
             <div className="auth-switch">
               <p>
-                {isLogin ? "لا تملك حساباً؟" : "تملك حساباً بالفعل؟"}
+                {isLogin ? t("noAccount") : t("hasAccount")}
                 <button
                   type="button"
-                  onClick={() => setIsLogin(!isLogin)}
-                  className="switch-btn">
-                  {isLogin ? "إنشاء حساب جديد" : "تسجيل الدخول"}
+                  onClick={() => {
+                    setIsLogin(!isLogin);
+                    setError("");
+                    setFormData({
+                      email: "",
+                      password: "",
+                      confirmPassword: "",
+                      fullName: "",
+                    });
+                  }}
+                  className="switch-btn"
+                  disabled={isLoading}>
+                  {isLogin ? t("createAccount") : t("loginLink")}
                 </button>
               </p>
             </div>
 
             <div className="social-login">
-              <div className="divider">
-                <span>أو</span>
-              </div>
-              <div className="social-buttons">
-                <button type="button" className="social-btn google-btn">
-                  <i className="fab fa-google"></i>
-                  متابعة مع Google
-                </button>
-                <button type="button" className="social-btn facebook-btn">
-                  <i className="fab fa-facebook-f"></i>
-                  متابعة مع Facebook
-                </button>
-              </div>
+              <div className="divider"></div>
+              <div className="social-buttons"></div>
             </div>
           </div>
 
           <div className="auth-image">
-            <img src="/images/hero-sec-img.gif" alt="Login Animation" />
+            <img
+              src="/assets/images/hero-sec-img.gif"
+              alt={t("loginAnimationAlt") || "Login"}
+            />
           </div>
         </div>
       </div>

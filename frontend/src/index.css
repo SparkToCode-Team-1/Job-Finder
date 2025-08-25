@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Color Palette */
+:root {
+  --main-color: #ff3d8b;
+  --secondary-color: #275aa6;
+  --third-color: #3eecff;
+  --fourth-color: #3fffb2;
+  --fifth-color: #ced3d9;
+}
+
+/* Use this color pattern:
+main color #FF3D8B
+secondary color #275AA6
+third color #3EECFF
+fourth color #3FFFB2
+fifth color #CED3D9
+*/
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
